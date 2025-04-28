@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>My Portfolio</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
@@ -12,6 +13,67 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+  
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 48px;
+      }
+
+      p {
+        font-size: 24px;
+      }
+
+      .projects-btn {
+        font-size: 24px;
+        padding: 12px 30px;
+      }
+
+      .popup-box {
+        height: 40vh;
+      }
+
+      .popup-title {
+        font-size: 36px;
+      }
+
+      .popup-description {
+        font-size: 18px;
+      }
+
+      .back-btn {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 36px;
+      }
+
+      p {
+        font-size: 20px;
+      }
+
+      .projects-btn {
+        font-size: 20px;
+        padding: 10px 25px;
+      }
+
+      .popup-box {
+        height: 30vh;
+      }
+
+      .popup-title {
+        font-size: 28px;
+      }
+
+      .popup-description {
+        font-size: 16px;
+      }
     }
   
     #defaultCanvas0 {
@@ -284,8 +346,11 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2),
                   0 0 20px rgba(255, 255, 255, 0.1);
       border: 2px solid rgba(255, 255, 255, 0.2);
-      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-      transform-style: preserve-3d;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .popup-title {
@@ -294,7 +359,8 @@
       margin: 0 0 20px 0;
       font-weight: 600;
       text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      text-align: center;
+      width: 100%;
     }
 
     .popup-description {
@@ -303,7 +369,9 @@
       line-height: 1.6;
       margin: 0;
       text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-      transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      text-align: center;
+      width: 100%;
+      max-width: 800px;
     }
 
     .scroll-indicator {
@@ -761,13 +829,6 @@ function createDustEffect() {
   animationFrameId = requestAnimationFrame(animate);
 }
 </script>
-
-<script>
-  if (location.hostname === 'arvinbozorgi.com') {
-    window.location.href = 'https://www.arvinbozorgi.com' + location.pathname + location.search + location.hash;
-  }
-</script>
-
 
 <script>
   const greetings = [
