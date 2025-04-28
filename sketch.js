@@ -3,24 +3,22 @@ let connections = [];
 let maxDistance = 150;
 let repelRadius = 100;
 
-// Define fixed color for particles and lines
 let particleColor;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  // Initialize color once in setup
-  particleColor = color(47, 98, 194); // #2f62c2
-  
+
+  particleColor = color(47, 98, 194); 
+
   for (let i = 0; i < 100; i++) {
     particles.push(new Particle());
   }
 }
 
 function draw() {
-  // Solid background
-  background(22, 33, 62); // #16213e
 
-  // Draw particles and connections
+  background(22, 33, 62); 
+
   for (let p of particles) {
     p.applyRepel();
     p.move();
@@ -35,7 +33,7 @@ function draw() {
       let d = dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y);
 
       if (d < maxDistance) {
-        // Use the same particle color with varying opacity
+
         let alpha = map(d, 0, maxDistance, 255, 0);
         stroke(red(particleColor), green(particleColor), blue(particleColor), alpha);
         strokeWeight(map(d, 0, maxDistance, 2, 0.2));
