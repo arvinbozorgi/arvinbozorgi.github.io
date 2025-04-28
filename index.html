@@ -6,7 +6,7 @@
   <title>My Portfolio</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-  
+
     body, html {
       margin: 0;
       padding: 0;
@@ -16,7 +16,7 @@
       -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
-  
+
     @media (max-width: 768px) {
       h1 {
         font-size: 48px;
@@ -75,7 +75,7 @@
         font-size: 16px;
       }
     }
-  
+
     #defaultCanvas0 {
       position: fixed;
       top: 0;
@@ -83,7 +83,7 @@
       z-index: 0;
       pointer-events: none;
     }
-  
+
     .content {
       position: relative;
       z-index: 1;
@@ -97,7 +97,7 @@
       padding: 0 20px;
       transform-origin: center;
     }
-  
+
     h1 {
       font-size: 72px;
       margin: 0;
@@ -105,7 +105,7 @@
       font-weight: 700;
       letter-spacing: -1px;
     }
-  
+
     p {
       font-size: 36px;
       margin-top: 15px;
@@ -114,12 +114,12 @@
       max-width: 800px;
       line-height: 1.4;
     }
-  
+
     a {
       color: #2f62c2;
       text-decoration: none;
     }
-  
+
     a:hover {
       text-decoration: underline;
     }
@@ -131,7 +131,7 @@
         #00f2fe,
         #4facfe,
         #00f2fe,
-        #4facfe /* loops back to start color */
+        #4facfe 
       );
       background-size: 400% 400%;
       background-clip: text;
@@ -472,7 +472,7 @@
       margin-left: 2px;
       animation: blink 1s steps(2, start) infinite;
       position: relative;
-      top: 10px; /* <-- this moves it up slightly */
+      top: 10px; 
     }
 
     @keyframes blink {
@@ -524,7 +524,6 @@
       visibility: visible;
     }
 
-    /* Smooth fade-in with slight move up */
     @keyframes fadeSlideIn {
       from {
         opacity: 0;
@@ -540,7 +539,6 @@
       animation: fadeSlideIn 1s ease forwards;
     }
 
-    /* Fade out and slightly slide down */
     @keyframes fadeSlideOut {
       from {
         opacity: 1;
@@ -557,7 +555,7 @@
     }
 
   </style>
-  
+
 </head>
 
 <body>
@@ -610,30 +608,28 @@
 <script src="sketch.js"></script>
 
 <script>
-// Store pre-calculated positions
+
 let preCalculatedPositions = [];
 let dustParticles = [];
 let animationFrameId = null;
 
-// Pre-calculate dust positions for each element
 function calculateDustPositions(element) {
   const rect = element.getBoundingClientRect();
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   canvas.width = rect.width;
   canvas.height = rect.height;
-  
-  // Draw the text on canvas
+
   ctx.fillStyle = 'white';
   ctx.font = window.getComputedStyle(element).font;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(element.textContent, canvas.width/2, canvas.height/2);
-  
+
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const pixels = imageData.data;
   const positions = [];
-  
+
   for (let y = 0; y < canvas.height; y += 2) {
     for (let x = 0; x < canvas.width; x += 2) {
       const i = (y * canvas.width + x) * 4;
@@ -657,7 +653,7 @@ function calculateDustPositions(element) {
 window.addEventListener('load', () => {
   const content = document.querySelector('.content');
   const elements = content.querySelectorAll('h1, p, .projects-btn');
-  
+
   elements.forEach(element => {
     preCalculatedPositions.push(...calculateDustPositions(element));
   });
@@ -670,78 +666,80 @@ let isTransitioning = false;
 function showPopups() {
   const container = document.querySelector('.popup-container');
   container.classList.add('active');
-  
+
   const popups = document.querySelectorAll('.popup');
   popups[0].classList.add('active');
-  
+
   document.querySelector('.back-btn').classList.add('visible');
-  
+
   addScrollListener();
 }
 
 function handleScroll(event) {
   if (isTransitioning) return;
-  
+
   const delta = event.deltaY;
   if (delta > 0 && currentProjectIndex < totalProjects - 1) {
+
     isTransitioning = true;
     const currentPopup = document.querySelectorAll('.popup')[currentProjectIndex];
     const nextPopup = document.querySelectorAll('.popup')[currentProjectIndex + 1];
-    
+
     currentPopup.style.transform = 'translateY(-100vh) scale(0.8) rotate(-5deg)';
     currentPopup.style.opacity = '0';
-    
+
     nextPopup.style.transform = 'translateY(0) scale(1) rotate(0)';
     nextPopup.style.opacity = '1';
     nextPopup.classList.add('active');
-    
+
     const currentBox = currentPopup.querySelector('.popup-box');
     const currentContent = currentPopup.querySelector('.popup-content');
     const nextBox = nextPopup.querySelector('.popup-box');
     const nextContent = nextPopup.querySelector('.popup-content');
-    
+
     currentBox.style.transform = 'rotateX(-30deg) translateZ(-100px)';
     currentContent.style.transform = 'rotateX(-30deg) translateZ(-50px)';
     nextBox.style.transform = 'rotateX(0) translateZ(0)';
     nextContent.style.transform = 'rotateX(0) translateZ(0)';
-    
+
     setTimeout(() => {
       currentPopup.classList.remove('active');
       currentProjectIndex++;
       isTransitioning = false;
-      
+
       currentBox.style.transform = '';
       currentContent.style.transform = '';
       nextBox.style.transform = '';
       nextContent.style.transform = '';
     }, 1000);
   } else if (delta < 0 && currentProjectIndex > 0) {
+
     isTransitioning = true;
     const currentPopup = document.querySelectorAll('.popup')[currentProjectIndex];
     const prevPopup = document.querySelectorAll('.popup')[currentProjectIndex - 1];
-    
+
     currentPopup.style.transform = 'translateY(100vh) scale(0.8) rotate(5deg)';
     currentPopup.style.opacity = '0';
-    
+
     prevPopup.style.transform = 'translateY(0) scale(1) rotate(0)';
     prevPopup.style.opacity = '1';
     prevPopup.classList.add('active');
-    
+
     const currentBox = currentPopup.querySelector('.popup-box');
     const currentContent = currentPopup.querySelector('.popup-content');
     const prevBox = prevPopup.querySelector('.popup-box');
     const prevContent = prevPopup.querySelector('.popup-content');
-    
+
     currentBox.style.transform = 'rotateX(30deg) translateZ(-100px)';
     currentContent.style.transform = 'rotateX(30deg) translateZ(-50px)';
     prevBox.style.transform = 'rotateX(0) translateZ(0)';
     prevContent.style.transform = 'rotateX(0) translateZ(0)';
-    
+
     setTimeout(() => {
       currentPopup.classList.remove('active');
       currentProjectIndex--;
       isTransitioning = false;
-      
+
       currentBox.style.transform = '';
       currentContent.style.transform = '';
       prevBox.style.transform = '';
@@ -750,33 +748,98 @@ function handleScroll(event) {
   }
 }
 
+let touchStartY = 0;
+let touchEndY = 0;
+
+function handleTouchStart(event) {
+  touchStartY = event.touches[0].clientY;
+}
+
+function handleTouchMove(event) {
+  if (isTransitioning) return;
+  touchEndY = event.touches[0].clientY;
+}
+
+function handleTouchEnd() {
+  if (isTransitioning) return;
+
+  const delta = touchStartY - touchEndY;
+  const minSwipeDistance = 50; 
+
+  if (Math.abs(delta) < minSwipeDistance) return;
+
+  if (delta > 0 && currentProjectIndex < totalProjects - 1) {
+
+    isTransitioning = true;
+    const currentPopup = document.querySelectorAll('.popup')[currentProjectIndex];
+    const nextPopup = document.querySelectorAll('.popup')[currentProjectIndex + 1];
+
+    currentPopup.style.transform = 'translateY(-100vh) scale(0.8) rotate(-5deg)';
+    currentPopup.style.opacity = '0';
+
+    nextPopup.style.transform = 'translateY(0) scale(1) rotate(0)';
+    nextPopup.style.opacity = '1';
+    nextPopup.classList.add('active');
+
+    setTimeout(() => {
+      currentPopup.classList.remove('active');
+      currentProjectIndex++;
+      isTransitioning = false;
+    }, 1000);
+  } else if (delta < 0 && currentProjectIndex > 0) {
+
+    isTransitioning = true;
+    const currentPopup = document.querySelectorAll('.popup')[currentProjectIndex];
+    const prevPopup = document.querySelectorAll('.popup')[currentProjectIndex - 1];
+
+    currentPopup.style.transform = 'translateY(100vh) scale(0.8) rotate(5deg)';
+    currentPopup.style.opacity = '0';
+
+    prevPopup.style.transform = 'translateY(0) scale(1) rotate(0)';
+    prevPopup.style.opacity = '1';
+    prevPopup.classList.add('active');
+
+    setTimeout(() => {
+      currentPopup.classList.remove('active');
+      currentProjectIndex--;
+      isTransitioning = false;
+    }, 1000);
+  }
+}
+
 function addScrollListener() {
   window.addEventListener('wheel', handleScroll, { passive: false });
+  window.addEventListener('touchstart', handleTouchStart, { passive: true });
+  window.addEventListener('touchmove', handleTouchMove, { passive: true });
+  window.addEventListener('touchend', handleTouchEnd, { passive: true });
 }
 
 function removeScrollListener() {
   window.removeEventListener('wheel', handleScroll);
+  window.removeEventListener('touchstart', handleTouchStart);
+  window.removeEventListener('touchmove', handleTouchMove);
+  window.removeEventListener('touchend', handleTouchEnd);
 }
 
 function createDustEffect() {
   const content = document.querySelector('.content');
   const elements = content.querySelectorAll('h1, p, .projects-btn');
-  
+
   elements.forEach(element => {
     element.classList.add('hidden');
   });
-  
+
   let canvas = document.getElementById('dustCanvas');
   if (!canvas) {
     canvas = document.createElement('canvas');
     canvas.id = 'dustCanvas';
     document.body.appendChild(canvas);
   }
-  
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const ctx = canvas.getContext('2d');
-  
+
   dustParticles = preCalculatedPositions.map(pos => ({
     ...pos,
     currentX: pos.x,
@@ -787,23 +850,23 @@ function createDustEffect() {
     rotationSpeed: (Math.random() - 0.5) * 0.4, 
     opacity: 1
   }));
-  
+
   let startTime = null;
   let popupShown = false;
-  
+
   function animate(timestamp) {
     if (!startTime) startTime = timestamp;
     const progress = timestamp - startTime;
     const deltaTime = timestamp - (startTime + progress - 16.67);
-    
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     dustParticles.forEach(particle => {
       particle.currentX += particle.vx * (deltaTime / 16.67);
       particle.currentY += particle.vy * (deltaTime / 16.67);
       particle.rotation += particle.rotationSpeed * (deltaTime / 16.67);
       particle.opacity -= 0.008 * (deltaTime / 16.67);
-      
+
       ctx.save();
       ctx.translate(particle.currentX, particle.currentY);
       ctx.rotate(particle.rotation);
@@ -812,12 +875,12 @@ function createDustEffect() {
       ctx.fillRect(-particle.size/2, -particle.size/2, particle.size, particle.size);
       ctx.restore();
     });
-    
+
     if (!popupShown && progress > 250) {
       showPopups();
       popupShown = true;
     }
-    
+
     if (progress < 1000 && dustParticles.some(p => p.opacity > 0)) {
       animationFrameId = requestAnimationFrame(animate);
     } else {
@@ -825,37 +888,37 @@ function createDustEffect() {
       dustParticles = [];
     }
   }
-  
+
   animationFrameId = requestAnimationFrame(animate);
 }
 </script>
 
 <script>
   const greetings = [
-    "Hello",      // english
-    "Bonjour",    // french
-    "Hola",       // spanish
-    "Ciao",       // italian
-    "سلام",        // farsi
-    "Olá",        // portuguese
-    "привет",     // russian
-    "你好"         // chinese
+    "Hello",      
+    "Bonjour",    
+    "Hola",       
+    "Ciao",       
+    "سلام",        
+    "Olá",        
+    "привет",     
+    "你好"         
   ];
-  
+
   const helloText = document.getElementById('hello-text');
   const cursor = document.getElementById('cursor');
-  
+
   let greetingIndex = 0;
   let letterIndex = 0;
   let typing = true;
-  
+
   setInterval(() => {
     cursor.style.opacity = (cursor.style.opacity === "0" ? "1" : "0");
   }, 500);
-  
+
   function typeGreeting() {
     const currentGreeting = greetings[greetingIndex];
-  
+
     if (typing) {
       if (letterIndex < currentGreeting.length) {
         helloText.textContent += currentGreeting[letterIndex];
@@ -877,7 +940,7 @@ function createDustEffect() {
       }
     }
   }
-  
+
   window.addEventListener('load', typeGreeting);
 
   function goBack() {
@@ -918,36 +981,36 @@ function createDustEffect() {
 <script>
   function addPopupMouseTilt() {
     const popups = document.querySelectorAll('.popup');
-  
+
     popups.forEach(popup => {
       const box = popup.querySelector('.popup-box');
       const content = popup.querySelector('.popup-content');
-  
+
       popup.addEventListener('mousemove', (e) => {
         if (!popup.classList.contains('active')) return;
-  
+
         const rect = popup.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-  
+
         const rotateX = ((y - centerY) / centerY) * 5;
         const rotateY = ((x - centerX) / centerX) * 5;
-  
+
         box.style.transform = `rotateX(${ -rotateX }deg) rotateY(${ rotateY }deg) scale(1.02)`;
         content.style.transform = `rotateX(${ -rotateX }deg) rotateY(${ rotateY }deg) scale(1.02)`;
       });
-  
+
       popup.addEventListener('mouseleave', () => {
         if (!popup.classList.contains('active')) return;
-        
+
         box.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
         content.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
       });
     });
   }
-  
+
   window.addEventListener('load', addPopupMouseTilt);
   </script>  
 
