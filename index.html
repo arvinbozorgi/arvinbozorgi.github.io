@@ -396,6 +396,98 @@
       visibility: hidden;
     }
 
+    #cursor {
+      display: inline-block;
+      width: 4px;
+      height: 1em;
+      background-color: rgba(255, 255, 255, 0.873);
+      margin-left: 2px;
+      animation: blink 1s steps(2, start) infinite;
+      position: relative;
+      top: 10px; /* <-- this moves it up slightly */
+    }
+
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2),
+                  0 0 20px rgba(255, 255, 255, 0.1);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 4;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3),
+                  0 0 30px rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .back-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                  0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .back-btn.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Smooth fade-in with slight move up */
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .content.fade-in {
+      animation: fadeSlideIn 1s ease forwards;
+    }
+
+    /* Fade out and slightly slide down */
+    @keyframes fadeSlideOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+    }
+
+    .popup.fade-out {
+      animation: fadeSlideOut 0.7s ease forwards;
+    }
+
   </style>
   
 </head>
@@ -403,15 +495,21 @@
 <body>
 
 <div class="content">
-  <h1>Hello, I'm <span class="gradient-text">Arvin</span></h1>
-  <p>Welcome to my portfolio!</p>
+  <h1>
+    <span id="hello-container">
+      <span id="hello-text"></span><span id="cursor"></span>,
+    </span>
+    I'm <span class="gradient-text">Arvin</span>
+  </h1>  
+  <p>Welcome to my portfolio</p>
   <button class="projects-btn" onclick="createDustEffect()">My Projects</button>
 </div>
 
 <div class="popup-container">
+  <button class="back-btn" onclick="goBack()">← Back</button>
   <div class="popup" id="popup1">
     <div class="popup-box">
-      <img src="https://via.placeholder.com/600x300" alt="Project 1" class="popup-image">
+      <img src="https://dummyimage.com/600x300/000/fff" alt="Project 1" class="popup-image">
     </div>
     <div class="popup-content">
       <h2 class="popup-title">Jarvis</h2>
@@ -420,7 +518,7 @@
   </div>
   <div class="popup" id="popup2">
     <div class="popup-box">
-      <img src="https://via.placeholder.com/600x300" alt="Project 2" class="popup-image">
+      <img src="https://dummyimage.com/600x300/000/fff" alt="Project 2" class="popup-image">
     </div>
     <div class="popup-content">
       <h2 class="popup-title">Soccer Tic Tac Toe</h2>
@@ -429,7 +527,7 @@
   </div>
   <div class="popup" id="popup3">
     <div class="popup-box">
-      <img src="https://via.placeholder.com/600x300" alt="Project 3" class="popup-image">
+      <img src="https://dummyimage.com/600x300/000/fff" alt="Project 3" class="popup-image">
     </div>
     <div class="popup-content">
       <h2 class="popup-title">AI Chess Helper Glasses</h2>
@@ -439,10 +537,8 @@
   <div class="scroll-indicator">Scroll to explore</div>
 </div>
 
-<!-- Include p5.js library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 
-<!-- Then your background sketch -->
 <script src="sketch.js"></script>
 
 <script>
@@ -466,13 +562,11 @@ function calculateDustPositions(element) {
   ctx.textBaseline = 'middle';
   ctx.fillText(element.textContent, canvas.width/2, canvas.height/2);
   
-  // Get pixel data
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const pixels = imageData.data;
   const positions = [];
   
-  // Sample pixels more efficiently
-  for (let y = 0; y < canvas.height; y += 2) { // Increased particle density
+  for (let y = 0; y < canvas.height; y += 2) {
     for (let x = 0; x < canvas.width; x += 2) {
       const i = (y * canvas.width + x) * 4;
       if (pixels[i + 3] > 128) {
@@ -480,10 +574,10 @@ function calculateDustPositions(element) {
           x: rect.left + x,
           y: rect.top + y,
           size: Math.random() * 2 + 1,
-          vx: (Math.random() * 4 + 2) * (Math.random() > 0.1 ? 1 : -1), // Slower horizontal movement
-          vy: (Math.random() - 0.5) * 2, // Slower vertical movement
+          vx: (Math.random() * 4 + 2) * (Math.random() > 0.1 ? 1 : -1),
+          vy: (Math.random() - 0.5) * 2,
           rotation: 0,
-          rotationSpeed: (Math.random() - 0.5) * 0.1, // Slower rotation
+          rotationSpeed: (Math.random() - 0.5) * 0.1,
           opacity: 1
         });
       }
@@ -492,7 +586,6 @@ function calculateDustPositions(element) {
   return positions;
 }
 
-// Pre-calculate positions when page loads
 window.addEventListener('load', () => {
   const content = document.querySelector('.content');
   const elements = content.querySelectorAll('h1, p, .projects-btn');
@@ -510,11 +603,11 @@ function showPopups() {
   const container = document.querySelector('.popup-container');
   container.classList.add('active');
   
-  // Show first project
   const popups = document.querySelectorAll('.popup');
   popups[0].classList.add('active');
   
-  // Add scroll listener
+  document.querySelector('.back-btn').classList.add('visible');
+  
   addScrollListener();
 }
 
@@ -523,21 +616,17 @@ function handleScroll(event) {
   
   const delta = event.deltaY;
   if (delta > 0 && currentProjectIndex < totalProjects - 1) {
-    // Scroll down
     isTransitioning = true;
     const currentPopup = document.querySelectorAll('.popup')[currentProjectIndex];
     const nextPopup = document.querySelectorAll('.popup')[currentProjectIndex + 1];
     
-    // Animate current popup out
     currentPopup.style.transform = 'translateY(-100vh) scale(0.8) rotate(-5deg)';
     currentPopup.style.opacity = '0';
     
-    // Animate next popup in
     nextPopup.style.transform = 'translateY(0) scale(1) rotate(0)';
     nextPopup.style.opacity = '1';
     nextPopup.classList.add('active');
     
-    // Add 3D effect to content
     const currentBox = currentPopup.querySelector('.popup-box');
     const currentContent = currentPopup.querySelector('.popup-content');
     const nextBox = nextPopup.querySelector('.popup-box');
@@ -553,28 +642,23 @@ function handleScroll(event) {
       currentProjectIndex++;
       isTransitioning = false;
       
-      // Reset transforms
       currentBox.style.transform = '';
       currentContent.style.transform = '';
       nextBox.style.transform = '';
       nextContent.style.transform = '';
     }, 1000);
   } else if (delta < 0 && currentProjectIndex > 0) {
-    // Scroll up
     isTransitioning = true;
     const currentPopup = document.querySelectorAll('.popup')[currentProjectIndex];
     const prevPopup = document.querySelectorAll('.popup')[currentProjectIndex - 1];
     
-    // Animate current popup out
     currentPopup.style.transform = 'translateY(100vh) scale(0.8) rotate(5deg)';
     currentPopup.style.opacity = '0';
     
-    // Animate prev popup in
     prevPopup.style.transform = 'translateY(0) scale(1) rotate(0)';
     prevPopup.style.opacity = '1';
     prevPopup.classList.add('active');
     
-    // Add 3D effect to content
     const currentBox = currentPopup.querySelector('.popup-box');
     const currentContent = currentPopup.querySelector('.popup-content');
     const prevBox = prevPopup.querySelector('.popup-box');
@@ -590,7 +674,6 @@ function handleScroll(event) {
       currentProjectIndex--;
       isTransitioning = false;
       
-      // Reset transforms
       currentBox.style.transform = '';
       currentContent.style.transform = '';
       prevBox.style.transform = '';
@@ -599,12 +682,10 @@ function handleScroll(event) {
   }
 }
 
-// Add scroll event listener when popups are shown
 function addScrollListener() {
   window.addEventListener('wheel', handleScroll, { passive: false });
 }
 
-// Remove scroll event listener when popups are hidden
 function removeScrollListener() {
   window.removeEventListener('wheel', handleScroll);
 }
@@ -613,12 +694,10 @@ function createDustEffect() {
   const content = document.querySelector('.content');
   const elements = content.querySelectorAll('h1, p, .projects-btn');
   
-  // Hide content immediately
   elements.forEach(element => {
     element.classList.add('hidden');
   });
   
-  // Create canvas if it doesn't exist
   let canvas = document.getElementById('dustCanvas');
   if (!canvas) {
     canvas = document.createElement('canvas');
@@ -626,24 +705,21 @@ function createDustEffect() {
     document.body.appendChild(canvas);
   }
   
-  // Set canvas size
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const ctx = canvas.getContext('2d');
   
-  // Initialize particles
   dustParticles = preCalculatedPositions.map(pos => ({
     ...pos,
     currentX: pos.x,
     currentY: pos.y,
-    vx: (Math.random() * 16 + 8) * (Math.random() > 0.1 ? 1 : -1), // Doubled velocity
-    vy: (Math.random() - 0.5) * 8, // Doubled velocity
+    vx: (Math.random() * 16 + 8) * (Math.random() > 0.1 ? 1 : -1),
+    vy: (Math.random() - 0.5) * 8, 
     rotation: 0,
-    rotationSpeed: (Math.random() - 0.5) * 0.4, // Doubled rotation speed
+    rotationSpeed: (Math.random() - 0.5) * 0.4, 
     opacity: 1
   }));
   
-  // Start animation
   let startTime = null;
   let popupShown = false;
   
@@ -652,15 +728,13 @@ function createDustEffect() {
     const progress = timestamp - startTime;
     const deltaTime = timestamp - (startTime + progress - 16.67);
     
-    // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Update and draw particles
     dustParticles.forEach(particle => {
       particle.currentX += particle.vx * (deltaTime / 16.67);
       particle.currentY += particle.vy * (deltaTime / 16.67);
       particle.rotation += particle.rotationSpeed * (deltaTime / 16.67);
-      particle.opacity -= 0.008 * (deltaTime / 16.67); // Doubled fade rate
+      particle.opacity -= 0.008 * (deltaTime / 16.67);
       
       ctx.save();
       ctx.translate(particle.currentX, particle.currentY);
@@ -671,13 +745,11 @@ function createDustEffect() {
       ctx.restore();
     });
     
-    // Show first popup after 0.25 seconds (halved)
     if (!popupShown && progress > 250) {
       showPopups();
       popupShown = true;
     }
     
-    // Continue animation if particles are still visible (reduced duration to 1 second)
     if (progress < 1000 && dustParticles.some(p => p.opacity > 0)) {
       animationFrameId = requestAnimationFrame(animate);
     } else {
@@ -689,6 +761,127 @@ function createDustEffect() {
   animationFrameId = requestAnimationFrame(animate);
 }
 </script>
+
+<script>
+  const greetings = [
+    "Hello",      // english
+    "Bonjour",    // french
+    "Hola",       // spanish
+    "Ciao",       // italian
+    "سلام",        // farsi
+    "Olá",        // portuguese
+    "привет",     // russian
+    "你好"         // chinese
+  ];
+  
+  const helloText = document.getElementById('hello-text');
+  const cursor = document.getElementById('cursor');
+  
+  let greetingIndex = 0;
+  let letterIndex = 0;
+  let typing = true;
+  
+  setInterval(() => {
+    cursor.style.opacity = (cursor.style.opacity === "0" ? "1" : "0");
+  }, 500);
+  
+  function typeGreeting() {
+    const currentGreeting = greetings[greetingIndex];
+  
+    if (typing) {
+      if (letterIndex < currentGreeting.length) {
+        helloText.textContent += currentGreeting[letterIndex];
+        letterIndex++;
+        setTimeout(typeGreeting, 150);
+      } else {
+        typing = false;
+        setTimeout(typeGreeting, 1000);
+      }
+    } else {
+      if (letterIndex > 0) {
+        helloText.textContent = currentGreeting.substring(0, letterIndex - 1);
+        letterIndex--;
+        setTimeout(typeGreeting, 100);
+      } else {
+        greetingIndex = (greetingIndex + 1) % greetings.length;
+        typing = true;
+        setTimeout(typeGreeting, 500);
+      }
+    }
+  }
+  
+  window.addEventListener('load', typeGreeting);
+
+  function goBack() {
+  const container = document.querySelector('.popup-container');
+  const popups = document.querySelectorAll('.popup');
+  const content = document.querySelector('.content');
+
+  const activePopup = document.querySelector('.popup.active');
+
+  if (activePopup) {
+    activePopup.classList.add('fade-out');
+  }
+    setTimeout(() => {
+      container.classList.remove('active');
+
+      popups.forEach(popup => {
+        popup.classList.remove('active', 'fade-out');
+        popup.style.transform = '';
+        popup.style.opacity = '';
+      });
+
+      currentProjectIndex = 0;
+      removeScrollListener();
+
+      const elements = content.querySelectorAll('h1, p, .projects-btn');
+      elements.forEach(element => {
+        element.classList.remove('hidden');
+      });
+
+      content.classList.add('fade-in');
+      setTimeout(() => {
+        content.classList.remove('fade-in');
+      }, 1000);
+    }, 700);
+  }
+  </script>  
+
+<script>
+  function addPopupMouseTilt() {
+    const popups = document.querySelectorAll('.popup');
+  
+    popups.forEach(popup => {
+      const box = popup.querySelector('.popup-box');
+      const content = popup.querySelector('.popup-content');
+  
+      popup.addEventListener('mousemove', (e) => {
+        if (!popup.classList.contains('active')) return;
+  
+        const rect = popup.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+  
+        const rotateX = ((y - centerY) / centerY) * 5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+  
+        box.style.transform = `rotateX(${ -rotateX }deg) rotateY(${ rotateY }deg) scale(1.02)`;
+        content.style.transform = `rotateX(${ -rotateX }deg) rotateY(${ rotateY }deg) scale(1.02)`;
+      });
+  
+      popup.addEventListener('mouseleave', () => {
+        if (!popup.classList.contains('active')) return;
+        
+        box.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        content.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      });
+    });
+  }
+  
+  window.addEventListener('load', addPopupMouseTilt);
+  </script>  
 
 </body>
 </html>
