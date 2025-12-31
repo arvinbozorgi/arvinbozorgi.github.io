@@ -454,9 +454,42 @@ a:hover {
   gap: 40px;
 }
 
+/* Upside-down L layout */
+.project-gcr {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+}
+
+.project-jarvis {
+  grid-column: 2;
+  grid-row: 1;
+  grid-row-end: span 3;
+  align-self: start;
+}
+
+.project-cvcg {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+}
+
+.project-sttt {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+}
+
 @media (max-width: 900px) {
   .projects-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .project-gcr,
+  .project-jarvis,
+  .project-cvcg,
+  .project-sttt {
+    grid-column: 1;
   }
 }
 
@@ -494,14 +527,29 @@ a:hover {
   overflow: hidden;
 }
 
-.project-image img {
+.project-gcr .project-image {
+  height: 220px;
+}
+
+.project-jarvis .project-image {
+  height: 700px;
+}
+
+.project-image img,
+.project-image video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.project-card:hover .project-image img {
+.project-jarvis .project-image video {
+  object-fit: contain;
+  background: var(--bg-darker);
+}
+
+.project-card:hover .project-image img,
+.project-card:hover .project-image video {
   transform: scale(1.1);
 }
 
