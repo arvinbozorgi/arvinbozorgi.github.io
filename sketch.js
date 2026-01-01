@@ -8,15 +8,6 @@ let particleColor;
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent('particleCanvas');
-  canvas.style('position', 'fixed');
-  canvas.style('top', '0');
-  canvas.style('left', '0');
-  canvas.style('z-index', '-1');
-  canvas.style('pointer-events', 'none');
-  canvas.style('width', '100%');
-  canvas.style('height', '100vh');
-  canvas.style('max-height', '100vh');
-  canvas.style('overflow', 'hidden');
   
   particleColor = color(47, 98, 194); 
   for (let i = 0; i < 100; i++) {
