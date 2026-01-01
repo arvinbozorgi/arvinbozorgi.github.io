@@ -455,7 +455,7 @@ a:hover {
 }
 
 /* Upside-down L layout */
-.project-gcr {
+.project-sttt {
   grid-column: 1;
   grid-row: 1;
   align-self: start;
@@ -474,7 +474,7 @@ a:hover {
   align-self: start;
 }
 
-.project-sttt {
+.project-gcr {
   grid-column: 1;
   grid-row: 3;
   align-self: start;
