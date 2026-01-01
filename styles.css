@@ -490,6 +490,9 @@ a:hover {
   .project-cvcg,
   .project-sttt {
     grid-column: 1;
+    grid-row: auto;
+    grid-row-end: auto;
+    align-self: start;
   }
 }
 
