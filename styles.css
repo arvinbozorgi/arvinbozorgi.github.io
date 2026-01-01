@@ -468,13 +468,13 @@ a:hover {
   align-self: start;
 }
 
-.project-cvcg {
+.project-gcr {
   grid-column: 1;
   grid-row: 2;
   align-self: start;
 }
 
-.project-gcr {
+.project-cvcg {
   grid-column: 1;
   grid-row: 3;
   align-self: start;
