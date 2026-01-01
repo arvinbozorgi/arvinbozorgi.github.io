@@ -675,6 +675,12 @@ a:hover {
   position: relative;
 }
 
+.connect-title {
+  font-family: 'Cormorant', serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
 .connect-section::before {
   content: '';
   position: absolute;
