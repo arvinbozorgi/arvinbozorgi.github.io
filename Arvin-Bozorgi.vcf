@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Bozorgi;Arvin;;;
+FN:Arvin Bozorgi
+ORG:McDonogh School
+TITLE:Student / Researcher
+EMAIL;TYPE=INTERNET;TYPE=PREF:bozorgi@gmail.com
+TEL;TYPE=CELL,PREF:+1 (443) 430-5034
+ADR;TYPE=HOME:;;;;Maryland;;USA
+URL:http://arvinbozorgi.com
+NOTE:ICDM 2026 • Student Researcher • [University/Lab] • [Research Ar
+ ea] • Open to Research Collaboration • Data Mining • Machine Learnin
+ g • Graph Learning
+END:VCARD
